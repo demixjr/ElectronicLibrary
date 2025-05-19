@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "1gOs5m0rQ6I=",
+  "dgSpecHash": "74N/hG2bI5c=",
   "success": true,
   "projectFilePath": "D:\\ElectronicLibrary\\ElectronicLibrary\\ElectronicLibrary.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\K\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\K\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.5\\microsoft.entityframeworkcore.9.0.5.nupkg.sha512",
     "C:\\Users\\K\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.5\\microsoft.entityframeworkcore.abstractions.9.0.5.nupkg.sha512",
     "C:\\Users\\K\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.5\\microsoft.entityframeworkcore.analyzers.9.0.5.nupkg.sha512",
