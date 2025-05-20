@@ -2855,23 +2855,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\K\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\crims\\.nuget\\packages\\": {},
+    "T:\\Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ElectronicLibrary\\DAL\\DAL.csproj",
+      "projectUniqueName": "T:\\Visual Studio\\VS_projects\\ElectronicLibrary\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "D:\\ElectronicLibrary\\DAL\\DAL.csproj",
-      "packagesPath": "C:\\Users\\K\\.nuget\\packages\\",
-      "outputPath": "D:\\ElectronicLibrary\\DAL\\obj\\",
+      "projectPath": "T:\\Visual Studio\\VS_projects\\ElectronicLibrary\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\crims\\.nuget\\packages\\",
+      "outputPath": "T:\\Visual Studio\\VS_projects\\ElectronicLibrary\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "T:\\Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\K\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\crims\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2937,7 +2937,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

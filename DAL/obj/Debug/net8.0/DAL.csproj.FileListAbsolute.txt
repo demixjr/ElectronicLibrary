@@ -12,3 +12,18 @@ D:\ElectronicLibrary\DAL\obj\Debug\net8.0\refint\DAL.dll
 D:\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.pdb
 D:\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.genruntimeconfig.cache
 D:\ElectronicLibrary\DAL\obj\Debug\net8.0\ref\DAL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\bin\Debug\net8.0\DAL.deps.json
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\bin\Debug\net8.0\DAL.runtimeconfig.json
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\bin\Debug\net8.0\DAL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\bin\Debug\net8.0\DAL.pdb
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.AssemblyInfo.cs
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.csproj.CoreCompileInputs.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.sourcelink.json
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\refint\DAL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.pdb
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\DAL.genruntimeconfig.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\DAL\obj\Debug\net8.0\ref\DAL.dll

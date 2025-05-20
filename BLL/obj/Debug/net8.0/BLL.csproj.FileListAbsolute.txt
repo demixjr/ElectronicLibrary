@@ -13,3 +13,19 @@ D:\ElectronicLibrary\BLL\bin\Debug\net8.0\DAL.dll
 D:\ElectronicLibrary\BLL\bin\Debug\net8.0\DAL.pdb
 D:\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.csproj.AssemblyReference.cache
 D:\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.csproj.Up2Date
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\bin\Debug\net8.0\BLL.deps.json
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\bin\Debug\net8.0\BLL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\bin\Debug\net8.0\BLL.pdb
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\bin\Debug\net8.0\DAL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\bin\Debug\net8.0\DAL.pdb
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.csproj.AssemblyReference.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.GeneratedMSBuildEditorConfig.editorconfig
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.AssemblyInfoInputs.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.AssemblyInfo.cs
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.csproj.CoreCompileInputs.cache
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.sourcelink.json
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.csproj.Up2Date
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\refint\BLL.dll
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\BLL.pdb
+T:\Visual Studio\VS_projects\ElectronicLibrary\BLL\obj\Debug\net8.0\ref\BLL.dll
