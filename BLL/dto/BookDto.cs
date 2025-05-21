@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.dto
 {
-    internal class BookDto
+    public class BookDto
     {
     }
 }
