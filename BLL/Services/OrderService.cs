@@ -4,6 +4,7 @@ using DAL;
 using BLL.Exceptions;
 using DAL.Models;
 using AutoMapper;
+using System.Net;
 
 namespace BLL.Services
 {
@@ -20,11 +21,12 @@ namespace BLL.Services
 
         public void AddBookToOrder(int orderId, int bookId)
         {
-            var order = _unitOfWork.GetRepository<Order>().Get(orderId);
+            var order = GetOrderOrThrow(orderId);
+
             var book = _unitOfWork.GetRepository<Book>().Get(bookId);
-            if (book == null || order == null)
+            if (book == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Книгу з ID {bookId} не знайдено.");
             }
             if (order.Books.Any(b => b.Id == book.Id))
             {
@@ -41,7 +43,7 @@ namespace BLL.Services
             var user = _unitOfWork.GetRepository<User>().Get(dto.UserId);
             if (user == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Користувача з ID {dto.UserId} не знайдено.");
             }
 
             var entity = _mapper.Map<Order>(dto);
@@ -56,16 +58,12 @@ namespace BLL.Services
 
         public void DeleteBookFromOrder(int orderId, int bookId)
         {
-            var order = _unitOfWork.GetRepository<Order>().Get(orderId);
-            if (order == null)
-            {
-                throw new NotFoundException();
-            }
+            var order = GetOrderOrThrow(orderId);
 
             var book = order.Books.FirstOrDefault(b => b.Id == bookId);
             if (book == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Книгу з ID {bookId} не знайдено.");
             }
 
             order.Books.Remove(book);
@@ -76,11 +74,7 @@ namespace BLL.Services
 
         public void DeleteOrder(int orderId)
         {
-            var order = _unitOfWork.GetRepository<Order>().Get(orderId);
-            if (order == null)
-            {
-                throw new NotFoundException();
-            }
+            var order = GetOrderOrThrow(orderId);
 
             _unitOfWork.GetRepository<Order>().Remove(order);
             _unitOfWork.Save();
@@ -88,11 +82,7 @@ namespace BLL.Services
 
         public IEnumerable<BookDto> GetAllBooksInOrder(int orderId)
         {
-            var order = _unitOfWork.GetRepository<Order>().Get(orderId);
-            if (order == null)
-            {
-                throw new NotFoundException();
-            }
+            var order = GetOrderOrThrow(orderId);
 
             return _mapper.Map<IEnumerable<BookDto>>(order.Books);
         }
@@ -105,12 +95,19 @@ namespace BLL.Services
 
         public OrderDto GetOrder(int orderId)
         {
-            var entity = _unitOfWork.GetRepository<Order>().Get(orderId);
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetOrderOrThrow(orderId);
+
             return _mapper.Map<OrderDto>(entity);
+        }
+
+        private Order GetOrderOrThrow(int id)
+        {
+            var order = _unitOfWork.GetRepository<Order>().Get(id);
+            if (order == null)
+            {
+                throw new NotFoundException($"Заказ з ID {id} не знайдено.");
+            }
+            return order;
         }
     }
 }

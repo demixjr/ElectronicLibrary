@@ -32,12 +32,7 @@ namespace BLL.Services
 
         public void DeleteUser(int id)
         {
-            var entity = _unitOfWork.GetRepository<User>().Get(id);
-
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetUserOrThrow(id);
 
             _unitOfWork.GetRepository<User>().Remove(entity);
             _unitOfWork.Save();
@@ -45,11 +40,7 @@ namespace BLL.Services
 
         public UserDto GetUserById(int id)
         {
-            var entity = _unitOfWork.GetRepository<User>().Get(id);
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetUserOrThrow(id);
 
             return _mapper.Map<UserDto>(entity);
         }
@@ -62,12 +53,7 @@ namespace BLL.Services
 
         public void ChangeUserPassword(int id, string newPassword)
         {
-            var entity = _unitOfWork.GetRepository<User>().Get(id);
-
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetUserOrThrow(id);
 
             entity.Password = newPassword;
             _unitOfWork.Save();
@@ -75,12 +61,7 @@ namespace BLL.Services
 
         public void ChangeUserAddress(int id, string newAddress)
         {
-            var entity = _unitOfWork.GetRepository<User>().Get(id);
-
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetUserOrThrow(id);
 
             entity.Address = newAddress;
             _unitOfWork.Save();
@@ -88,11 +69,7 @@ namespace BLL.Services
 
         public IEnumerable<OrderDto> GetAllOrders(int id)
         {
-            var entity = _unitOfWork.GetRepository<User>().Get(id);
-            if (entity == null)
-            {
-                throw new NotFoundException();
-            }
+            var entity = GetUserOrThrow(id);
 
             return _mapper.Map<IEnumerable<OrderDto>>(entity.Orders);
         }
@@ -105,8 +82,18 @@ namespace BLL.Services
 
             if (usernameExists)
             {
-                throw new ValidationException("Користувач з таким ім'ям вже існує.");
+                throw new ValidationException($"Користувач з ім'ям {dto.Username} вже існує.");
             }
+        }
+
+        private User GetUserOrThrow(int id)
+        {
+            var user = _unitOfWork.GetRepository<User>().Get(id);
+            if (user == null)
+            {
+                throw new NotFoundException($"Користувача з ID {id} не знайдено.");
+            }
+            return user;
         }
     }
 }
