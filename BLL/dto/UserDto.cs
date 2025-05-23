@@ -1,4 +1,5 @@
-﻿
+﻿using BLL.Enums;
+
 namespace BLL.dto
 {
     public class UserDto
@@ -9,6 +10,7 @@ namespace BLL.dto
         public string? Email { get; set; }
         public string? Password { get; set; }
         public string? Address { get; set; }
-        public virtual ICollection<OrderDto>? Orders { get; set; }
+        public Roles Role { get; set; }
+        public OrderDto Order { get; set; }
     }
 }
