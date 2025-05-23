@@ -45,6 +45,10 @@ namespace BLL.Services
             {
                 throw new NotFoundException($"Користувача з ID {dto.UserId} не знайдено.");
             }
+            if (user.Order != null)
+            {
+                throw new ValidationException($"Заказ для користувача з ID {user.Id} вже існує.");
+            }
 
             var entity = _mapper.Map<Order>(dto);
 
@@ -72,11 +76,13 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public void DeleteOrder(int orderId)
+        public void ClearOrder(int orderId)
         {
             var order = GetOrderOrThrow(orderId);
 
-            _unitOfWork.GetRepository<Order>().Remove(order);
+            order.Books.Clear();
+            order.TotalPrice = 0;
+
             _unitOfWork.Save();
         }
 
@@ -90,6 +96,7 @@ namespace BLL.Services
         public IEnumerable<OrderDto> GetAllOrders()
         {
             var entities = _unitOfWork.GetRepository<Order>().GetAll();
+
             return _mapper.Map<IEnumerable<OrderDto>>(entities);
         }
 

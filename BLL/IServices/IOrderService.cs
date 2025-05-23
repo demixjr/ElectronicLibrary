@@ -11,7 +11,7 @@ namespace BLL.IServices
     {
         OrderDto AddOrder(OrderDto dto);
         void AddBookToOrder(int orderId, int bookId);
-        void DeleteOrder(int orderId);
+        void ClearOrder(int orderId);
         void DeleteBookFromOrder(int orderId, int bookId);
         IEnumerable<BookDto> GetAllBooksInOrder(int orderId);
         IEnumerable<OrderDto> GetAllOrders();
