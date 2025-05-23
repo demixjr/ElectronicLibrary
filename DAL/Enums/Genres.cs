@@ -8,14 +8,14 @@ namespace DAL.Enums
 {
     public enum Genres
     {
-        Роман,
-        Повість,
-        Оповідання,
-        Фантастика,
-        Детектив,
-        Трилер,
-        Пригоди,
-        Жахи,
-        Комедія
+        Novel,         
+        Novella,        
+        ShortStory,     
+        ScienceFiction,
+        Detective,      
+        Thriller,       
+        Adventure,     
+        Horror,        
+        Comedy
     }
 }
