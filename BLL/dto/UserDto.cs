@@ -1,4 +1,4 @@
-﻿using BLL.Enums;
+using BLL.Enums;
 
 namespace BLL.dto
 {

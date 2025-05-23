@@ -65,9 +65,9 @@ namespace DAL
                 entity.Property(u => u.Address)
                       .HasMaxLength(descriptionLength);
 
-                entity.HasMany(u => u.Orders)
+                entity.HasOne(u => u.Order)
                       .WithOne(o => o.User)
-                      .HasForeignKey(o => o.UserId)
+                      .HasForeignKey<Order>(o => o.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 

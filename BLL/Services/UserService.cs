@@ -4,6 +4,7 @@ using DAL;
 using AutoMapper;
 using DAL.Models;
 using BLL.Exceptions;
+using DAL.Enums;
 
 namespace BLL.Services
 {
@@ -18,8 +19,26 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public UserDto AddUser(UserDto dto)
+        public UserDto RegisterUser(UserDto dto)
         {
+            ValidateUsernameIsUnique(dto);
+
+            var entity = _mapper.Map<User>(dto);
+            entity.Role = Roles.Registered;
+
+            _unitOfWork.GetRepository<User>().Add(entity);
+            _unitOfWork.Save();
+
+            return _mapper.Map<UserDto>(entity);
+        }
+
+        public UserDto CreatePrivilegedUser(UserDto dto)
+        {
+            if (dto.Role != Enums.Roles.Admin && dto.Role != Enums.Roles.Manager)
+            {
+                throw new ValidationException("Недопустима роль для цієї команди.");
+            }
+
             ValidateUsernameIsUnique(dto);
 
             var entity = _mapper.Map<User>(dto);
@@ -59,19 +78,11 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public void ChangeUserAddress(int id, string newAddress)
+        public OrderDto GetOrderByUser(int id)
         {
             var entity = GetUserOrThrow(id);
 
-            entity.Address = newAddress;
-            _unitOfWork.Save();
-        }
-
-        public IEnumerable<OrderDto> GetAllOrders(int id)
-        {
-            var entity = GetUserOrThrow(id);
-
-            return _mapper.Map<IEnumerable<OrderDto>>(entity.Orders);
+            return _mapper.Map<OrderDto>(entity.Order);
         }
 
         private void ValidateUsernameIsUnique(UserDto dto)
