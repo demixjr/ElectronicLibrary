@@ -1,4 +1,7 @@
 
+using DAL;
+using Microsoft.EntityFrameworkCore;
+
 namespace ElectronicLibrary
 {
     public class Program
@@ -6,6 +9,9 @@ namespace ElectronicLibrary
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<LibraryContext>(options => 
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
 

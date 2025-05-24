@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DAL.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace DAL
 {
     public class LibraryContext : DbContext
     {
+        private readonly IConfiguration? _configuration;
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
 
         }
-
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -61,9 +62,6 @@ namespace DAL
                 entity.Property(u => u.Password)
                       .IsRequired()
                       .HasMaxLength(passwordLength);
-
-                entity.Property(u => u.Address)
-                      .HasMaxLength(descriptionLength);
 
                 entity.HasOne(u => u.Order)
                       .WithOne(o => o.User)
