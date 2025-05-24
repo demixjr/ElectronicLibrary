@@ -1,7 +1,7 @@
 ﻿
 namespace ElectronicLibrary.Models.ResponseModels
 {
-    public class OrdedResponseModel
+    public class OrderResponseModel
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
