@@ -62,8 +62,6 @@ namespace DAL
                       .IsRequired()
                       .HasMaxLength(passwordLength);
 
-                entity.Property(u => u.Address)
-                      .HasMaxLength(descriptionLength);
 
                 entity.HasOne(u => u.Order)
                       .WithOne(o => o.User)

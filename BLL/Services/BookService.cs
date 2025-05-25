@@ -45,7 +45,7 @@ namespace BLL.Services
 
         public void DeleteBook(int bookId)
         {
-            var entity = _unitOfWork.GetRepository<Book>().Get(bookId);
+            var entity = GetBookOrThrowEx(bookId);
             _unitOfWork.GetRepository<Book>().Remove(entity);
             _unitOfWork.Save();
         }
