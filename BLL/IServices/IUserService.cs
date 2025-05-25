@@ -11,5 +11,6 @@ namespace BLL.IServices
         void ChangeUserPassword(int id, string newPassword);
         void DeleteUser(int id);
         OrderDto GetOrderByUser(int id);
+        UserDto Authenticate(string username, string password);
     }
 }

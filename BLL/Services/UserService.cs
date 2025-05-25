@@ -5,6 +5,7 @@ using AutoMapper;
 using DAL.Models;
 using BLL.Exceptions;
 using DAL.Enums;
+using System.Security.Authentication;
 
 namespace BLL.Services
 {
@@ -83,6 +84,22 @@ namespace BLL.Services
             var entity = GetUserOrThrow(id);
 
             return _mapper.Map<OrderDto>(entity.Order);
+        }
+
+        public UserDto Authenticate(string username, string password)
+        {
+            var user = _unitOfWork.GetRepository<User>().Find(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+            {
+                throw new AuthenticationException($"Помилка аутентифікації: Користувача з ім'ям {username} не існує.");
+            }
+
+            if (user.Password != password)
+            {
+                throw new AuthenticationException("Помилка аутентифікації: Неправильний пароль.");
+            }
+
+            return _mapper.Map<UserDto>(user);
         }
 
         private void ValidateUsernameIsUnique(UserDto dto)
