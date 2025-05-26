@@ -4,6 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text;
+using BLL.IServices;
+using BLL.Services;
+using AutoMapper;
+using BLL;
 
 namespace ElectronicLibrary
 {
@@ -33,7 +37,7 @@ namespace ElectronicLibrary
 
                     if (string.IsNullOrEmpty(jwtKey))
                     {
-                        throw new InvalidOperationException("JWT Key is not configured");
+                        throw new InvalidOperationException("JWT Key не налаштовано.");
                     }
 
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -60,6 +64,13 @@ namespace ElectronicLibrary
                 options.AddPolicy("ManagerPolicy", policy => policy.RequireRole("Manager", "Admin"));
                 options.AddPolicy("UserPolicy", policy => policy.RequireRole("User", "Manager", "Admin"));
             });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PLMappingProfile));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IBookService, BookService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
