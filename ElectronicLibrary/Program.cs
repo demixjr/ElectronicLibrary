@@ -66,6 +66,7 @@ namespace ElectronicLibrary
             });
 
             builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PLMappingProfile));
+            builder.Services.AddScoped<DbContext, LibraryContext>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
