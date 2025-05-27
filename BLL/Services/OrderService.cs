@@ -86,13 +86,6 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public IEnumerable<BookDto> GetAllBooksInOrder(int orderId)
-        {
-            var order = GetOrderOrThrow(orderId);
-
-            return _mapper.Map<IEnumerable<BookDto>>(order.Books);
-        }
-
         public IEnumerable<OrderDto> GetAllOrders()
         {
             var entities = _unitOfWork.GetRepository<Order>().GetAll();
@@ -100,11 +93,27 @@ namespace BLL.Services
             return _mapper.Map<IEnumerable<OrderDto>>(entities);
         }
 
-        public OrderDto GetOrder(int orderId)
+        public OrderDto GetOrderById(int orderId)
         {
             var entity = GetOrderOrThrow(orderId);
 
             return _mapper.Map<OrderDto>(entity);
+        }
+
+        public OrderDto GetOrderByUser(int userId)
+        {
+            var user = _unitOfWork.GetRepository<User>().Get(userId);
+            if (user == null)
+            {
+                throw new NotFoundException($"Користувача з ID {userId} не знайдено.");
+            }
+
+            if (user.Order == null)
+            {
+                throw new NotFoundException($"Заказ для користувача з ID {userId} ще не існує.");
+            }
+
+            return _mapper.Map<OrderDto>(user.Order);
         }
 
         private Order GetOrderOrThrow(int id)
