@@ -1,4 +1,4 @@
-using BLL.Enums;
+using DAL.Enums;
 namespace BLL.dto
 {
     public class BookDto

@@ -1,4 +1,4 @@
-﻿using BLL.Enums;
+﻿using DAL.Enums;
 
 namespace ElectronicLibrary.Models.ResponseModels
 {

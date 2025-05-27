@@ -4,7 +4,7 @@ using BLL.IServices;
 using DAL.Models;
 using DAL;
 using BLL.Exceptions;
-using BLL.Enums;
+using DAL.Enums;
 
 namespace BLL.Services
 {

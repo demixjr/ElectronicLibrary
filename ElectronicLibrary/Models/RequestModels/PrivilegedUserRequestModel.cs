@@ -1,4 +1,4 @@
-﻿using BLL.Enums;
+﻿using DAL.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace ElectronicLibrary.Models.RequestModels

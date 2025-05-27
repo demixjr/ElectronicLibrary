@@ -35,7 +35,7 @@ namespace BLL.Services
 
         public UserDto CreatePrivilegedUser(UserDto dto)
         {
-            if (dto.Role != Enums.Roles.Admin && dto.Role != Enums.Roles.Manager)
+            if (dto.Role != Roles.Admin && dto.Role != Roles.Manager)
             {
                 throw new ValidationException("Недопустима роль для цієї команди.");
             }
@@ -81,7 +81,7 @@ namespace BLL.Services
 
         public UserDto Authenticate(string username, string password)
         {
-            var user = _unitOfWork.GetRepository<User>().Find(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            var user = _unitOfWork.GetRepository<User>().Find(u => u.Username.Equals(username));
             if (user == null)
             {
                 throw new AuthenticationException($"Помилка аутентифікації: Користувача з ім'ям {username} не існує.");
