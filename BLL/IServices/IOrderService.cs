@@ -13,8 +13,8 @@ namespace BLL.IServices
         void AddBookToOrder(int orderId, int bookId);
         void ClearOrder(int orderId);
         void DeleteBookFromOrder(int orderId, int bookId);
-        IEnumerable<BookDto> GetAllBooksInOrder(int orderId);
         IEnumerable<OrderDto> GetAllOrders();
-        OrderDto GetOrder(int orderId);
+        OrderDto GetOrderById(int orderId);
+        OrderDto GetOrderByUser(int userId);
     }
 }

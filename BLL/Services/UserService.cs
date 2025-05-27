@@ -79,13 +79,6 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public OrderDto GetOrderByUser(int id)
-        {
-            var entity = GetUserOrThrow(id);
-
-            return _mapper.Map<OrderDto>(entity.Order);
-        }
-
         public UserDto Authenticate(string username, string password)
         {
             var user = _unitOfWork.GetRepository<User>().Find(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
