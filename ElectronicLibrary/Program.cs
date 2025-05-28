@@ -8,6 +8,7 @@ using BLL.IServices;
 using BLL.Services;
 using AutoMapper;
 using BLL;
+using Microsoft.OpenApi.Models;
 
 namespace ElectronicLibrary
 {
@@ -84,7 +85,7 @@ namespace ElectronicLibrary
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Р’СЃС‚Р°РІС‚Рµ JWT С‚РѕРєРµРЅ"
+                    Description = "Вставте JWT токен"
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
