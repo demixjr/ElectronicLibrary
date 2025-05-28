@@ -14,14 +14,30 @@ namespace DAL
             _dbSet = context.Set<T>();
         }
 
-        public T Get(int id)
+        public T Get(int id, params Expression<Func<T, object>>[] includes)
         {
-            return _dbSet.Find(id);
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query.FirstOrDefault(e => EF.Property<int>(e, "Id") == id);
         }
-        public IEnumerable<T> GetAll()
+
+        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes)
         {
-            return _dbSet.ToList();
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query.ToList();
         }
+
         public T Find(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.FirstOrDefault(predicate);
