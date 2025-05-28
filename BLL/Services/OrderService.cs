@@ -45,13 +45,11 @@ namespace BLL.Services
             {
                 throw new NotFoundException($"Користувача з ID {dto.UserId} не знайдено.");
             }
-            if (user.Order != null)
-            {
-                throw new ValidationException($"Заказ для користувача з ID {user.Id} вже існує.");
-            }
 
             var entity = _mapper.Map<Order>(dto);
 
+            entity.UserId = dto.UserId;
+            entity.TotalPrice = 0;
             entity.Books = new List<Book>();
 
             _unitOfWork.GetRepository<Order>().Add(entity);
@@ -88,7 +86,7 @@ namespace BLL.Services
 
         public IEnumerable<OrderDto> GetAllOrders()
         {
-            var entities = _unitOfWork.GetRepository<Order>().GetAll();
+            var entities = _unitOfWork.GetRepository<Order>().GetAll(o => o.User, o => o.Books);
 
             return _mapper.Map<IEnumerable<OrderDto>>(entities);
         }
@@ -102,15 +100,10 @@ namespace BLL.Services
 
         public OrderDto GetOrderByUser(int userId)
         {
-            var user = _unitOfWork.GetRepository<User>().Get(userId);
+            var user = _unitOfWork.GetRepository<User>().Get(userId, o => o.Order);
             if (user == null)
             {
                 throw new NotFoundException($"Користувача з ID {userId} не знайдено.");
-            }
-
-            if (user.Order == null)
-            {
-                throw new NotFoundException($"Заказ для користувача з ID {userId} ще не існує.");
             }
 
             return _mapper.Map<OrderDto>(user.Order);
@@ -118,7 +111,7 @@ namespace BLL.Services
 
         private Order GetOrderOrThrow(int id)
         {
-            var order = _unitOfWork.GetRepository<Order>().Get(id);
+            var order = _unitOfWork.GetRepository<Order>().Get(id, o => o.User, o => o.Books);
             if (order == null)
             {
                 throw new NotFoundException($"Заказ з ID {id} не знайдено.");
