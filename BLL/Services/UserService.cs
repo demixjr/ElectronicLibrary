@@ -13,11 +13,13 @@ namespace BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IOrderService _orderService;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IOrderService orderService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _orderService = orderService;
         }
 
         public UserDto RegisterUser(UserDto dto)
@@ -29,6 +31,12 @@ namespace BLL.Services
 
             _unitOfWork.GetRepository<User>().Add(entity);
             _unitOfWork.Save();
+
+            var createdUser = _unitOfWork.GetRepository<User>().Find(o => o.Username.Equals(dto.Username));
+            _orderService.AddOrder(new OrderDto
+            {
+                UserId = createdUser.Id
+            });
 
             return _mapper.Map<UserDto>(entity);
         }
@@ -46,6 +54,12 @@ namespace BLL.Services
 
             _unitOfWork.GetRepository<User>().Add(entity);
             _unitOfWork.Save();
+
+            var createdUser = _unitOfWork.GetRepository<User>().Find(o => o.Username.Equals(dto.Username));
+            _orderService.AddOrder(new OrderDto
+            {
+                UserId = createdUser.Id
+            });
 
             return _mapper.Map<UserDto>(entity);
         }

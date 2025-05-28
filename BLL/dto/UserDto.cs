@@ -10,6 +10,7 @@ namespace BLL.dto
         public string? Email { get; set; }
         public string? Password { get; set; }
         public Roles Role { get; set; }
+        public int OrderId { get; set; } 
         public OrderDto Order { get; set; }
     }
 }
