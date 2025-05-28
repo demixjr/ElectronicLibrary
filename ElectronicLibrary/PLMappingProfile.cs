@@ -12,7 +12,6 @@ namespace ElectronicLibrary
             CreateMap<BookRequestModel, BookDto>();
             CreateMap<BookDto, BookResponseModel>();
 
-            CreateMap<OrderRequestModel, OrderDto>();
             CreateMap<OrderDto, OrderResponseModel>();
 
             CreateMap<UserRequestModel, UserDto>();
