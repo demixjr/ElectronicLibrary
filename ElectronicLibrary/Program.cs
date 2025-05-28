@@ -62,7 +62,7 @@ namespace ElectronicLibrary
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("ManagerPolicy", policy => policy.RequireRole("Manager", "Admin"));
-                options.AddPolicy("UserPolicy", policy => policy.RequireRole("User", "Manager", "Admin"));
+                options.AddPolicy("UserPolicy", policy => policy.RequireRole("Registered", "Manager", "Admin"));
             });
 
             builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PLMappingProfile));
