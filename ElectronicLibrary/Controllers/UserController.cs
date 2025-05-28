@@ -9,6 +9,7 @@ using System.Security.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using BLL.Exceptions;
 using System.Security.Claims;
+using ElectronicLibrary.Helpers;
 
 namespace ElectronicLibrary.Controllers
 {
@@ -28,11 +29,21 @@ namespace ElectronicLibrary.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "UserPolicy")]
         public ActionResult<UserResponseModel> Get(int id)
         {
             try
             {
+                if (!User.TryGetUserId(out var currentUserId))
+                {
+                    return Unauthorized();
+                }
+
+                if (currentUserId != id && !User.IsInRole("Admin"))
+                {
+                    return Forbid();
+                }
+
                 var dto = _userService.GetUserById(id);
                 var responseModel = _mapper.Map<UserResponseModel>(dto);
 
@@ -115,7 +126,7 @@ namespace ElectronicLibrary.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Сталася неочікувана помилка." });
             }
@@ -152,27 +163,26 @@ namespace ElectronicLibrary.Controllers
             }
         }
 
-        [HttpPut("changePassword/{id}")]
-        [Authorize]
+        [HttpPut("change-password/{id}")]
+        [Authorize(Policy = "UserPolicy")]
         public ActionResult<UserResponseModel> ChangeUserPassword(int id, [FromBody] UserRequestModel requestModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userIdClaim == null || !int.TryParse(userIdClaim, out var currentUserId))
-            {
-                return Unauthorized(new { message = "User ID не знайдено в токені." });
-            }
-            if (currentUserId != id)
-            {
-                return Forbid();
-            }
             try
             {
+                if (!User.TryGetUserId(out var currentUserId))
+                {
+                    return Unauthorized();
+                }
+
+                if (currentUserId != id)
+                {
+                    return Forbid();
+                }
+
                 _userService.ChangeUserPassword(id, requestModel.Password!);
                 var dto = _userService.GetUserById(id);
                 var responseModel = _mapper.Map<UserResponseModel>(dto);
