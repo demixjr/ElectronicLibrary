@@ -5,8 +5,8 @@ namespace ElectronicLibrary.Models.ResponseModels
     public class UserResponseModel
     {
         public int Id { get; set; }
-        public string? Username { get; set; }
-        public string? Email { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
         public Roles Role { get; set; }
     }
 }

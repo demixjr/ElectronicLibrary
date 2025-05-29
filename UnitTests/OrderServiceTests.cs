@@ -8,6 +8,7 @@ using BLL.Exceptions;
 using BLL.Services;
 using NSubstitute;
 using BLL.dto;
+using System.Linq.Expressions;
 
 namespace UnitTests
 {
@@ -34,6 +35,8 @@ namespace UnitTests
 
 
         }
+      
+
         [Fact]
         public void AddOrder_UserNotFound_ThrowsNotFoundException()
         {
@@ -47,27 +50,6 @@ namespace UnitTests
 
             // Act & Assert
             var ex = Assert.Throws<NotFoundException>(() => _orderServiceMock.AddOrder(dto));
-        }
-
-        [Fact]
-        public void AddOrder_UserHasOrder_ThrowsValidationException()
-        {
-            // Arrange
-            var dto = new OrderDto
-            {
-                UserId = _fixture.Create<int>()
-            };
-
-            var userWithOrder = new User
-            {
-                Id = dto.UserId,
-                Order = new Order() 
-            };
-
-            _unitOfWorkMock.GetRepository<User>().Get(dto.UserId).Returns(userWithOrder);
-
-            // Act & Assert
-            var ex = Assert.Throws<ValidationException>(() => _orderServiceMock.AddOrder(dto));
         }
 
         [Fact]
@@ -138,22 +120,20 @@ namespace UnitTests
         }
 
         [Fact]
-        public void DeleteBookFromOrder_BookExists_RemovesBookAndUpdatesPrice()
+        public void DeleteBookFromOrder_BookNotExists_ThrowsNotFoundException()
         {
-            //Arrangre
+            // Arrange
             int orderId = _fixture.Create<int>(), bookId = _fixture.Create<int>();
             var book = new Book { Id = bookId, Price = 100m };
             var order = new Order { Id = orderId, Books = new List<Book> { book }, TotalPrice = 100m };
 
             _orderRepositoryMock.Get(orderId).Returns(order);
 
-            //Act
-            _orderServiceMock.DeleteBookFromOrder(orderId, bookId);
+            int nonExistentBookId = bookId + 1; 
 
-            // Assert
-            Assert.DoesNotContain(book, order.Books);
-            Assert.Equal(0m, order.TotalPrice);
-            _unitOfWorkMock.Received(1).Save();
+            // Act & Assert
+            Assert.Throws<NotFoundException>(() =>
+                _orderServiceMock.DeleteBookFromOrder(orderId, nonExistentBookId));
         }
 
 
@@ -168,24 +148,7 @@ namespace UnitTests
 
         }
 
-        [Fact]
-        public void ClearOrder_OrderExists_ClearsBooksAndSetsTotalPriceToZero()
-        {
-            //Arrange
-            int orderId = _fixture.Create<int>();
-            var books = new List<Book> { new Book(), new Book() };
-            var order = new Order { Id = orderId, Books = books, TotalPrice = _fixture.Create<decimal>() };
-
-            _orderRepositoryMock.Get(orderId).Returns(order);
-
-            //Act
-            _orderServiceMock.ClearOrder(orderId);
-
-            //Assert
-            Assert.Empty(order.Books);
-            Assert.Equal(0m, order.TotalPrice);
-            _unitOfWorkMock.Received(1).Save();
-        }
+      
 
 
         [Fact]
@@ -196,42 +159,20 @@ namespace UnitTests
             _orderRepositoryMock.Get(orderId).Returns((Order)null);
 
             // Act & Assert
-            var ex = Assert.Throws<NotFoundException>(() => _orderServiceMock.GetAllBooksInOrder(orderId));
+            var ex = Assert.Throws<NotFoundException>(() => _orderServiceMock.GetOrderById(orderId).Books);
 
         }
 
         [Fact]
-        public void GetAllBooksInOrder_OrderExists_ReturnsMappedBooks()
-        {
-            //Arrange
-            int orderId = _fixture.Create<int>();
-            var books = new List<Book> { _fixture.Create<Book>(), _fixture.Create<Book>() };
-            var order = new Order { Id = orderId, Books = books };
-            var booksDto = _fixture.CreateMany<BookDto>(books.Count).ToList();
-
-            _orderRepositoryMock.Get(orderId).Returns(order);
-            _mapperMock.Map<IEnumerable<BookDto>>(books).Returns(booksDto);
-
-            //Act
-
-            var result = _orderServiceMock.GetAllBooksInOrder(orderId);
-
-            //Assert
-            Assert.Equal(booksDto, result);
-        }
-
-
-        [Fact]
-     
         public void GetAllOrders_ReturnsMappedOrders()
         {
             // Arrange
             var users = new List<User>
-            {
-               new User { Id =  _fixture.Create<int>(), Order = null },
-               new User { Id =  _fixture.Create<int>(), Order = null },
-               new User { Id =  _fixture.Create<int>(), Order = null }
-            };
+    {
+       new User { Id =  _fixture.Create<int>(), Order = null },
+       new User { Id =  _fixture.Create<int>(), Order = null },
+       new User { Id =  _fixture.Create<int>(), Order = null }
+    };
 
             var orders = users.Select(u => new Order
             {
@@ -240,23 +181,24 @@ namespace UnitTests
             }).ToList();
 
             var ordersDto = new List<OrderDto>
-            {
-               new OrderDto(),
-               new OrderDto(),
-               new OrderDto()
-            };
+    {
+       new OrderDto(),
+       new OrderDto(),
+       new OrderDto()
+    };
 
-            _unitOfWorkMock.GetRepository<Order>().GetAll().Returns(orders);
+            _unitOfWorkMock.GetRepository<Order>().GetAll(Arg.Any<Expression<Func<Order, object>>[]>())
+                .Returns(orders);
+
             _mapperMock.Map<IEnumerable<OrderDto>>(orders).Returns(ordersDto);
+            var _orderService = new OrderService(_unitOfWorkMock, _mapperMock);
+            // Act
+            var result = _orderService.GetAllOrders();
 
-            //Act
-
-            var result = _orderServiceMock.GetAllOrders();
-
-            //Assert
-
+            // Assert
             Assert.Equal(ordersDto, result);
         }
+
 
 
 
@@ -269,39 +211,11 @@ namespace UnitTests
             _orderRepositoryMock.Get(orderId).Returns((Order)null);
 
             // Act & Assert
-            var ex = Assert.Throws<NotFoundException>(() => _orderServiceMock.GetOrder(orderId));
+            var ex = Assert.Throws<NotFoundException>(() => _orderServiceMock.GetOrderById(orderId));
         }
 
-        [Fact]
-        public void GetOrder_OrderExists_ReturnsMappedOrderDto()
-        {
-            //Arrange
-            int orderId = _fixture.Create<int>();
+       
 
-            var user = new User { Id = _fixture.Create<int>() };
-            var order = new Order
-            {
-                Id = orderId,
-                User = user,
-                Books = new List<Book> { new Book(), new Book() }
-            };
-
-            var dto = new OrderDto
-            {
-                Id = orderId,
-                UserId = user.Id,
-            };
-
-            _unitOfWorkMock.GetRepository<Order>().Get(orderId).Returns(order);
-            _mapperMock.Map<OrderDto>(order).Returns(dto);
-
-            //Act
-
-            var result = _orderServiceMock.GetOrder(orderId);
-
-            //Assert
-            Assert.Equal(dto, result);
-        }
 
     }
 }

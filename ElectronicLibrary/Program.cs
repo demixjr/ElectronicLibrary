@@ -9,6 +9,7 @@ using BLL.Services;
 using AutoMapper;
 using BLL;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace ElectronicLibrary
 {
@@ -24,7 +25,8 @@ namespace ElectronicLibrary
                 .AddUserSecrets<Program>();
 
             builder.Services.AddDbContext<LibraryContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             builder.Services.AddAuthentication(options =>
             {
