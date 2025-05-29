@@ -3,7 +3,6 @@ using AutoMapper;
 using BLL.dto;
 using BLL.Exceptions;
 using BLL.IServices;
-using BLL.Enums;
 using DAL;
 using DAL.Models;
 using DAL.Enums;
@@ -47,7 +46,7 @@ namespace UnitTests
                 Id = 1,
                 Username = username,
                 Password = _fixture.Create<string>(),
-                Role = BLL.Enums.Roles.Registered
+                Role = DAL.Enums.Roles.Registered
             };
 
             var existingUser = new User
@@ -76,7 +75,7 @@ namespace UnitTests
                 Id = _fixture.Create<int>(),
                 Username = _fixture.Create<string>(),
                 Password = _fixture.Create<string>(),
-                Role = BLL.Enums.Roles.Registered 
+                Role = DAL.Enums.Roles.Registered 
             };
 
             // Act & Assert
@@ -94,7 +93,7 @@ namespace UnitTests
                 Id = _fixture.Create<int>(),
                 Username = username,
                 Password = _fixture.Create<string>(),
-                Role = BLL.Enums.Roles.Admin
+                Role = DAL.Enums.Roles.Admin
             };
 
             var existingUser = new User
@@ -143,16 +142,6 @@ namespace UnitTests
             Assert.Throws<NotFoundException>(() => _userServiceMock.ChangeUserPassword(id, "newPassword"));
         }
 
-        [Fact]
-        public void GetOrderByUser_UserNotFound_ThrowsNotFoundException()
-        {
-            // Arrange
-            int id = _fixture.Create<int>();
-            _unitOfWorkMock.GetRepository<User>().Get(id).Returns((User)null);
-
-            // Act & Assert
-            Assert.Throws<NotFoundException>(() => _userServiceMock.GetOrderByUser(id));
-        }
 
         [Fact]
         public void Authenticate_UserNotFound_ThrowsAuthenticationException()
