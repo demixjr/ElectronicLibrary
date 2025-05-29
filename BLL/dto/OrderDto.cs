@@ -12,7 +12,7 @@ namespace BLL.dto
         public int Id { get; set; }
         public decimal TotalPrice { get; set; }
         public int UserId { get; set; }
-        public UserDto? User { get; set; }
+        public UserDto User { get; set; }
         public virtual ICollection<BookDto>? Books { get; set; }
     }
 }

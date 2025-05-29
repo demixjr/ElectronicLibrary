@@ -5,6 +5,7 @@ using BLL.Exceptions;
 using DAL.Models;
 using AutoMapper;
 using System.Net;
+using Microsoft.Identity.Client;
 
 namespace BLL.Services
 {
@@ -33,7 +34,6 @@ namespace BLL.Services
                 throw new ValidationException($"Книга з ID {bookId} вже додана до заказу.");
             }
             order.Books.Add(book);
-            order.TotalPrice += book.Price;
 
             _unitOfWork.Save();
         }
@@ -46,10 +46,14 @@ namespace BLL.Services
                 throw new NotFoundException($"Користувача з ID {dto.UserId} не знайдено.");
             }
 
+            if (user.Order != null)
+            {
+                throw new ValidationException($"Заказ для цього користувача з ID {dto.UserId} вже існує.");
+            }
+
             var entity = _mapper.Map<Order>(dto);
 
             entity.UserId = dto.UserId;
-            entity.TotalPrice = 0;
             entity.Books = new List<Book>();
 
             _unitOfWork.GetRepository<Order>().Add(entity);
@@ -69,7 +73,6 @@ namespace BLL.Services
             }
 
             order.Books.Remove(book);
-            order.TotalPrice -= book.Price;
 
             _unitOfWork.Save();
         }
@@ -79,7 +82,6 @@ namespace BLL.Services
             var order = GetOrderOrThrow(orderId);
 
             order.Books.Clear();
-            order.TotalPrice = 0;
 
             _unitOfWork.Save();
         }
@@ -100,10 +102,15 @@ namespace BLL.Services
 
         public OrderDto GetOrderByUser(int userId)
         {
-            var user = _unitOfWork.GetRepository<User>().Get(userId, o => o.Order);
+            var user = _unitOfWork.GetRepository<User>().Get(userId, o => o.Order.Books);
             if (user == null)
             {
                 throw new NotFoundException($"Користувача з ID {userId} не знайдено.");
+            }
+
+            if (user.Order == null)
+            {
+                throw new NotFoundException($"Заказ для користувача з ID {userId} ще не зареєстрован.");
             }
 
             return _mapper.Map<OrderDto>(user.Order);

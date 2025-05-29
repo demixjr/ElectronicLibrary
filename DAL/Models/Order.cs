@@ -10,18 +10,15 @@ namespace DAL.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User? User { get; set; }
+        public User User { get; set; }
         public virtual ICollection<Book> Books { get; set; }
-        public decimal TotalPrice { get; set; }
-
-        public decimal GetTotalPrice()
+        public decimal TotalPrice
         {
-            decimal totalPrice = 0;
-            foreach(var book in Books)
+            get
             {
-                totalPrice += book.Price;
+                return Books?.Sum(book => book.Price) ?? 0;
             }
-            return totalPrice;
+            set { }
         }
     }
 }

@@ -5,6 +5,7 @@ using DAL.Models;
 using DAL;
 using BLL.Exceptions;
 using DAL.Enums;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BLL.Services
 {
@@ -33,7 +34,7 @@ namespace BLL.Services
         {
             var book = GetBookOrThrowEx(id);
             ValidationOfTitle(dto);
-            _mapper.Map(dto, book);
+            _unitOfWork.GetRepository<Book>().Update(_mapper.Map(dto, book));
             _unitOfWork.Save();
         }
 
@@ -52,7 +53,7 @@ namespace BLL.Services
 
         public BookDto FindBookByTitle(string title)
         {
-            var entity = _unitOfWork.GetRepository<Book>().Find(b => b.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+            var entity = _unitOfWork.GetRepository<Book>().Find(b => b.Title.Equals(title));
             return _mapper.Map<BookDto>(entity);
         }
 

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ElectronicLibrary.Helpers;
 using DAL.Models;
+using ElectronicLibrary.Models.RequestModels;
+using BLL.dto;
 
 namespace ElectronicLibrary.Controllers
 {
@@ -45,7 +47,7 @@ namespace ElectronicLibrary.Controllers
 
         [HttpGet("by-user/{id}")]
         [Authorize(Policy = "UserPolicy")]
-        public ActionResult<UserResponseModel> GetByUser(int id)
+        public ActionResult<OrderResponseModel> GetByUser(int id)
         {
             try
             {
@@ -84,6 +86,46 @@ namespace ElectronicLibrary.Controllers
                 var responseModels = _mapper.Map<IEnumerable<OrderResponseModel>>(dtos);
 
                 return Ok(responseModels);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "Сталася неочікувана помилка." });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
+        public ActionResult<OrderResponseModel> AddOrder([FromBody] OrderRequestModel requestModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                if (!User.TryGetUserId(out var currentUserId))
+                {
+                    return Unauthorized();
+                }
+
+                if (currentUserId != requestModel.UserId)
+                {
+                    return Forbid();
+                }
+
+                var dto = _mapper.Map<OrderDto>(requestModel);
+                var createdDto = _orderService.AddOrder(dto);
+                var responseModel = _mapper.Map<OrderResponseModel>(createdDto);
+
+                return CreatedAtAction(nameof(Get), new { id = responseModel.Id }, responseModel);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception)
             {

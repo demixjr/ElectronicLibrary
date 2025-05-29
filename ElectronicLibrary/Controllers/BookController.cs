@@ -38,12 +38,12 @@ namespace ElectronicLibrary.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Неочікувана помилка." });
             }
         }
-        [HttpGet("{title}")]
+        [HttpGet("by-id/{title}")]
         [AllowAnonymous]
         public ActionResult<BookResponseModel> GetByTitle(string title)
         {
@@ -57,7 +57,7 @@ namespace ElectronicLibrary.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Неочікувана помилка." });
             }
@@ -187,7 +187,7 @@ namespace ElectronicLibrary.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Неочікувана помилка." });
             }

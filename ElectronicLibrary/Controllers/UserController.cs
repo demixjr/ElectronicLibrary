@@ -126,7 +126,7 @@ namespace ElectronicLibrary.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "Сталася неочікувана помилка." });
             }

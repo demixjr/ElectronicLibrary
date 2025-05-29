@@ -12,8 +12,14 @@ namespace BLL
     {
         public MappingProfile() 
         {
-            CreateMap<Book, BookDto>().ReverseMap();
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Book, BookDto>();
+            CreateMap<BookDto, Book>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>()
+                .ForMember(dest => dest.Order, opt => opt.Ignore());
+
             CreateMap<Order, OrderDto>().ReverseMap();
         }
 
