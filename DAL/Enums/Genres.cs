@@ -8,14 +8,14 @@ namespace DAL.Enums
 {
     public enum Genres
     {
-        Novel,         
-        Novella,        
-        ShortStory,     
+        Adventure,
+        Comedy,
+        Detective,
+        Horror,
+        Novel,
+        Novella,
         ScienceFiction,
-        Detective,      
-        Thriller,       
-        Adventure,     
-        Horror,        
-        Comedy
+        ShortStory,
+        Thriller
     }
 }

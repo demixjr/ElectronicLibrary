@@ -10,7 +10,6 @@ namespace DAL.Enums
     {
         Admin,
         Manager,
-        Registered,
-        Unregistered
+        Registered
     }
 }

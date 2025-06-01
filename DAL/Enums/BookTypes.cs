@@ -8,8 +8,8 @@ namespace DAL.Enums
 {
     public enum BookTypes
     {
-        Paper,
         Audio,
-        Electronic
+        Electronic,
+        Paper
     }
 }
