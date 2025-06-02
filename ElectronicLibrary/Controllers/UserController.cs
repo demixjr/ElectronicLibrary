@@ -136,6 +136,10 @@ namespace ElectronicLibrary.Controllers
         [AllowAnonymous]
         public ActionResult<LoginResponseModel> Login([FromBody] LoginRequestModel requestModel)
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return Forbid();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -34,13 +34,14 @@ namespace BLL.Services
                 throw new ValidationException($"Книга з ID {bookId} вже додана до заказу.");
             }
             order.Books.Add(book);
+            order.UpdateTotalPrice();
 
             _unitOfWork.Save();
         }
 
         public OrderDto AddOrder(OrderDto dto)
         {
-            var user = _unitOfWork.GetRepository<User>().Get(dto.UserId);
+            var user = _unitOfWork.GetRepository<User>().Get(dto.UserId, includes: o => o.Order);
             if (user == null)
             {
                 throw new NotFoundException($"Користувача з ID {dto.UserId} не знайдено.");
@@ -73,6 +74,7 @@ namespace BLL.Services
             }
 
             order.Books.Remove(book);
+            order.UpdateTotalPrice();
 
             _unitOfWork.Save();
         }
@@ -82,6 +84,7 @@ namespace BLL.Services
             var order = GetOrderOrThrow(orderId);
 
             order.Books.Clear();
+            order.UpdateTotalPrice();
 
             _unitOfWork.Save();
         }

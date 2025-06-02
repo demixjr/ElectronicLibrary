@@ -64,10 +64,12 @@ namespace UnitTests
             var user = new User
             {
                 Id = dto.UserId,
-                Order = null 
+                Order = null
             };
 
-            _unitOfWorkMock.GetRepository<User>().Get(dto.UserId).Returns(user);
+            _unitOfWorkMock.GetRepository<User>()
+                .Get(dto.UserId, Arg.Any<Expression<Func<User, object>>>())
+                .Returns(user);
 
             var orderEntity = new Order
             {

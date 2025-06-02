@@ -12,13 +12,11 @@ namespace DAL.Models
         public int UserId { get; set; }
         public User User { get; set; }
         public virtual ICollection<Book> Books { get; set; }
-        public decimal TotalPrice
+        public decimal TotalPrice { get; set; }
+
+        public void UpdateTotalPrice()
         {
-            get
-            {
-                return Books?.Sum(book => book.Price) ?? 0;
-            }
-            set { }
+            TotalPrice = Books?.Sum(book => book.Price) ?? 0;
         }
     }
 }
