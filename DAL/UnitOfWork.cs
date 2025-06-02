@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
     namespace DAL
     {
@@ -7,6 +8,9 @@
             private DbContext _context;
 
             private Dictionary<Type, object> _repositories;
+
+            private IDbContextTransaction _transaction;
+
 
             private bool _disposed = false;
 
@@ -26,23 +30,57 @@
                 }
                 return (IRepository<T>)
                     _repositories[typeof(T)];
-            }
+        }
 
 
-            public void Save()
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+        public void BeginTransaction()
+        {
+            if (_transaction == null)
+                _transaction = _context.Database.BeginTransaction();
+        }
+        public void Commit()
+        {
+            if (_transaction != null)
+                _transaction.Commit();
+
+            _transaction.Dispose();
+            _transaction = null;
+        }
+        public void Rollback()
+        {
+            if (_transaction != null)
             {
-                _context.SaveChanges();
-            }
-
-
-
-            public void Dispose()
-            {
-                if (!_disposed)
+                try
                 {
-                    _context.Dispose();
-                    _disposed = true;
+                    _transaction.Rollback();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Rollback failed: " + ex.Message);
+                }
+                finally
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
                 }
             }
         }
+
+
+
+        public void Dispose()
+        {
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+            _context.Dispose();
+            _disposed = true;
+        }
+    }
     }

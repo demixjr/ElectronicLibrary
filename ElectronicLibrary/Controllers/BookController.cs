@@ -43,7 +43,7 @@ namespace ElectronicLibrary.Controllers
                 return StatusCode(500, new { message = "Неочікувана помилка." });
             }
         }
-        [HttpGet("by-id/{title}")]
+        [HttpGet("by-title/{title}")]
         [AllowAnonymous]
         public ActionResult<BookResponseModel> GetByTitle(string title)
         {
@@ -177,7 +177,7 @@ namespace ElectronicLibrary.Controllers
             {
                 var dto = _mapper.Map<BookDto>(request);
                 _bookService.UpdateBook(id, dto);
-                return NoContent();
+                return Ok(new { message = "Книга оновлена", dto });
             }
             catch (NotFoundException ex)
             {
@@ -200,7 +200,7 @@ namespace ElectronicLibrary.Controllers
             try
             {
                 _bookService.DeleteBook(id);
-                return NoContent();
+                return Ok(new { message = "Книгу видалено" });
             }
             catch (NotFoundException ex)
             {
